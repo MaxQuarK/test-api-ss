@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function employer()
     {
-        return $this->belongsTo('App\Models\User', 'id', 'manager_id');
+        return $this->hasMany('App\Models\User', 'manager_id', 'id');
     }
 
     public function hasRole($role)

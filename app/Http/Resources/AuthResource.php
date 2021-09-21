@@ -13,8 +13,8 @@ class AuthResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'role' => new RoleResource($this->role),
-            'manager' => new UserResource($this->manager),
-            'employer' => new UserResource($this->employer),
+            'manager' => new ManagerResource($this->manager),
+            'employer' => EmployerResource::collection($this->employer),
             'token' => $this->createToken('Exore')->accessToken,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

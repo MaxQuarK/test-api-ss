@@ -36,18 +36,12 @@ class UserPolicy
         }
     }
 
-    public function edit(User $user)
-    {
-        return $user->hasRole($user->role->title);
-    }
-
-    public function update(User $user)
-    {
-        return $user->hasRole($user->role->title);
-    }
-
     public function delete(User $user)
     {
-        return $user->hasRole($user->role->title);
+        if ($user->hasRole('manager')) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

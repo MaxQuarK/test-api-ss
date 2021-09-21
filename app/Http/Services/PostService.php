@@ -50,7 +50,7 @@ class PostService
     public function showAll($filter)
     {
         if (Gate::allows('show', $this->user)) {
-            $allEmployers = $this->user->employer->get();
+            $allEmployers = $this->user->employer;
             if (isset($allEmployers)) {
                 $allPosts = collect();
                 foreach ($allEmployers as $employer) {
@@ -93,15 +93,17 @@ class PostService
     public function destroy()
     {
         $creator = $this->post->user_id;
-        if (Gate::allows('show', $this->user)) {
+        if (Gate::allows('delete', $this->user)) {
             if (($this->user->employer->where('id', '=', $creator)->count()) >= 1) {
                 $this->post->delete();
             } else {
-                return $this->errorMessage("Error");
+                return $this->errorMessage("Error delete empty source");
             }
         } else {
             if ($creator == $this->user->id) {
                 $this->post->delete();
+            } else {
+                return $this->errorMessage("Error delete not your source");
             }
         }
         return response()->json('Success');
